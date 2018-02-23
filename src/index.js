@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Portal from 'react-portal';
 import PropTypes from 'prop-types';
 import CloseButton from './components/CloseButton';
 import { SCROLL_LOCKED_CLASSNAME } from './constants';
@@ -36,8 +37,8 @@ export default class Modal extends React.PureComponent {
     }
   }
 
-  onEscapePressed(e) {
-    if (e.keyCode === 27) {
+  onEscapePressed(event) {
+    if (event.keyCode === 27) {
       this.props.onClose();
     }
   }
@@ -90,7 +91,7 @@ export default class Modal extends React.PureComponent {
             <CloseButton onClose={onClose} closeButtonColor={closeButtonColor} />
           }
           <div className="modal-content">
-            {children}
+            { children }
           </div>
         </div>
       </div>
@@ -103,7 +104,18 @@ export default class Modal extends React.PureComponent {
     if (!isOpen) return null;
 
     this.lockBodyScroll();
-    return ReactDOM.createPortal(this.renderModalMarkup(), this.domElement);
+
+    if (ReactDOM.createPortal) {
+      console.log('16')
+      return ReactDOM.createPortal(this.renderModalMarkup(), this.domElement);
+    }
+
+    console.log('15');
+    return (
+      <Portal isOpened>
+        { this.renderModalMarkup() }
+      </Portal>
+    );
   }
 }
 

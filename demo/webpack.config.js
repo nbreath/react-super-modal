@@ -10,7 +10,7 @@ module.exports = {
   output: {
     path: path.resolve('./dist'),
     filename: 'bundle.js',
-    publicPath: './',
+    publicPath: '/',
   },
   plugins: [
     new webpack.DefinePlugin({
